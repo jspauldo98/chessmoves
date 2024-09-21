@@ -9,24 +9,24 @@ using spauldo_techture;
 namespace server.Controllers;
 
 [ApiController]
-[Route("api/matrix")]
+[Route("api/job")]
 // Would add authorization here to hit token validator. Haven't added authentication or authorization to this project 
 // EG:
 //[Authorize(AuthenticationSchemes = AuthenticationScheme.TOKEN)]
-public class MatrixController(
-    IMatrixLogic matrixLogic
+public class JobController(
+    IJobLogic jobLogic
     ) : ControllerBase
 {
-    private readonly IMatrixLogic _matrixLogic = matrixLogic;
+    private readonly IJobLogic _jobLogic = jobLogic;
 
     [HttpGet]
     [Route("Get")]
-    public async Task<IActionResult> Get([FromQuery] string matrixId)
+    public async Task<IActionResult> Get([FromQuery] string jobId)
     {
         try
         {
-            if (!await _matrixLogic.ExistsAsync(matrixId)) return StatusCode(404);
-            return Ok(await _matrixLogic.GetAsync(matrixId));
+            if (!await _jobLogic.ExistsAsync(jobId)) return StatusCode(404);
+            return Ok(await _jobLogic.GetAsync(jobId));
         }
         catch (Exception) 
         {
@@ -35,29 +35,13 @@ public class MatrixController(
         }
     }
 
-    [HttpGet]
-    [Route("GetByName")]
-    public async Task<IActionResult> GetByName([FromQuery] string name)
+    [HttpPut]
+    [Route("Put")]
+    public async Task<IActionResult> Put([FromBody] JobDto job)
     {
         try
         {
-            if (!await _matrixLogic.ExistsByName(name)) return StatusCode(404);
-            return Ok(await _matrixLogic.GetByName(name));
-        }
-        catch (Exception)
-        {
-            // TODO - need to add exception handling
-            return StatusCode(500); 
-        }
-    }
-
-    [HttpPost]
-    [Route("Post")]
-    public async Task<IActionResult> Post([FromBody] MatrixDto dto)
-    {
-        try
-        {
-            return Ok(await _matrixLogic.SaveAsync(dto));
+            return Ok(await _jobLogic.SaveAsync(job));
         }
         catch (Exception) 
         {
@@ -73,7 +57,7 @@ public class MatrixController(
         try
         {
             if (string.IsNullOrEmpty(matrixId)) return BadRequest("Requires matrix Id.");
-            await _matrixLogic.DeleteAsync(matrixId);
+            await _jobLogic.DeleteAsync(matrixId);
             return Ok();
         }
         catch (Exception)

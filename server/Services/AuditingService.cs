@@ -11,6 +11,8 @@ public static class AuditingService
 
         // Matrix
         services.AddScoped<MatrixAuditor>();
+        // Job
+        services.AddScoped<JobAuditor>();
 
         // ... Register additional auditors
 
@@ -18,6 +20,9 @@ public static class AuditingService
             // Matrix
             var matrixAuditor = provider.GetRequiredService<MatrixAuditor>();
             auditFactory.RegisterAuditor(() => Task.FromResult<Auditor<MatrixEntity, MatrixModel, MatrixDto, MatrixEntityAudit>>(matrixAuditor));
+            // Job
+            var jobAuditor = provider.GetRequiredService<JobAuditor>();
+            auditFactory.RegisterAuditor(() => Task.FromResult<Auditor<JobEntity, JobModel, JobDto, JobEntityAudit>>(jobAuditor));
 
             // .. Register additional auditors
 

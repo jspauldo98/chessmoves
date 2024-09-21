@@ -8,3 +8,6 @@ namespace server;
 public class MatrixAuditor(MapperFactory mapperFactory, RepoFactory repoFactory)
 : Auditor<MatrixEntity, MatrixModel, MatrixDto, MatrixEntityAudit>(mapperFactory, repoFactory) 
 {  }
+public class JobAuditor(MapperFactory mapperFactory, RepoFactory repoFactory)
+: Auditor<JobEntity, JobModel, JobDto, JobEntityAudit>(mapperFactory, repoFactory) 
+{  }

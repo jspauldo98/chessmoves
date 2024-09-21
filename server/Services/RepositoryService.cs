@@ -13,6 +13,9 @@ public static class RepositoryService
         // Matrix
         services.AddScoped<IMatrixRepo, MatrixRepo>();
         services.AddScoped<IMatrixAuditRepo, MatrixAuditRepo>();
+        // Job
+        services.AddScoped<IJobRepo, JobRepo>();
+        services.AddScoped<IJobAuditRepo, JobAuditRepo>();
 
         // ... Register additional Repos
 
@@ -22,6 +25,13 @@ public static class RepositoryService
             var matrixAuditRepo = provider.GetRequiredService<IMatrixAuditRepo>();
             repoFactory.RegisterRepo(() => Task.FromResult<IRepoEntityFramework<MatrixEntity>>(matrixRepo));
             repoFactory.RegisterRepo(() => Task.FromResult<IRepoEntityFramework<MatrixEntityAudit>>(matrixAuditRepo));
+
+            // Job
+            var jobRepo = provider.GetRequiredService<IJobRepo>();
+            var jobAuditRepo = provider.GetRequiredService<IJobAuditRepo>();
+            repoFactory.RegisterRepo(() => Task.FromResult<IRepoEntityFramework<JobEntity>>(jobRepo));
+            repoFactory.RegisterRepo(() => Task.FromResult<IRepoEntityFramework<JobEntityAudit>>(jobAuditRepo));
+
             // ... Register additional repos
             return repoFactory;
         });

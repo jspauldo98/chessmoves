@@ -2,7 +2,6 @@ using HashidsNet;
 using spauldo_techture;
 using server.Models;
 using System.Text.Json;
-using System.Data.Common;
 
 namespace server.Mapping;
 

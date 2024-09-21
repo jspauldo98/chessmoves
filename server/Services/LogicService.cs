@@ -11,6 +11,9 @@ public static class LogicService
         // Matrix
         services.AddScoped<IMatrixLogic, MatrixLogic>();
         services.AddScoped(typeof(ILogicCrudYon<MatrixDto, MatrixModel, MatrixEntity, MatrixEntityAudit>), typeof(MatrixLogic));
+        // Job
+        services.AddScoped<IJobLogic, JobLogic>();
+        services.AddScoped(typeof(ILogicCrudYon<JobDto, JobModel, JobEntity, JobEntityAudit>), typeof(JobLogic));
 
         // ... Register other Logic 
     }
