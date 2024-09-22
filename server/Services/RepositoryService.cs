@@ -16,6 +16,9 @@ public static class RepositoryService
         // Job
         services.AddScoped<IJobRepo, JobRepo>();
         services.AddScoped<IJobAuditRepo, JobAuditRepo>();
+        // Puzzle Knight Moves
+        services.AddScoped<IPuzzleKnightMovesRepo, PuzzleKnightMovesRepo>();
+        services.AddScoped<IPuzzleKnightMovesAuditRepo, PuzzleKnightMovesAuditRepo>();
 
         // ... Register additional Repos
 
@@ -31,6 +34,12 @@ public static class RepositoryService
             var jobAuditRepo = provider.GetRequiredService<IJobAuditRepo>();
             repoFactory.RegisterRepo(() => Task.FromResult<IRepoEntityFramework<JobEntity>>(jobRepo));
             repoFactory.RegisterRepo(() => Task.FromResult<IRepoEntityFramework<JobEntityAudit>>(jobAuditRepo));
+
+            // Puzzle Knight Moves
+            var puzzleKnightMovesRepo = provider.GetRequiredService<IPuzzleKnightMovesRepo>();
+            var puzzleKnightMovesAuditRepo = provider.GetRequiredService<IPuzzleKnightMovesAuditRepo>();
+            repoFactory.RegisterRepo(() => Task.FromResult<IRepoEntityFramework<PuzzleKnightMovesEntity>>(puzzleKnightMovesRepo));
+            repoFactory.RegisterRepo(() => Task.FromResult<IRepoEntityFramework<PuzzleKnightMovesEntityAudit>>(puzzleKnightMovesAuditRepo));
 
             // ... Register additional repos
             return repoFactory;

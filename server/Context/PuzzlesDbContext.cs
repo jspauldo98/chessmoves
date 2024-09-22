@@ -14,6 +14,10 @@ public class PuzzlesDbContext(DbContextOptions<PuzzlesDbContext> options) : DbCo
 
         JobInit(modelBuilder);
         JobAuditInit(modelBuilder);
+
+        PuzzleKnightMovesInit(modelBuilder);
+        PuzzleKnightMovesAuditInit(modelBuilder);
+
         // ... More model generation
         base.OnModelCreating(modelBuilder);
     }
@@ -22,6 +26,8 @@ public class PuzzlesDbContext(DbContextOptions<PuzzlesDbContext> options) : DbCo
     public DbSet<MatrixEntityAudit> MatricesAudit { get; set; }
     public DbSet<JobEntity> Jobs { get; set; }
     public DbSet<JobEntityAudit> JobsAudit { get; set; }
+    public DbSet<PuzzleKnightMovesEntity> PuzzleKnightMoves { get; set; }
+    public DbSet<PuzzleKnightMovesEntityAudit> PuzzleKnightMovesAudit { get; set; }
 
     public static void MatrixInit(ModelBuilder modelBuilder)
     {
@@ -65,6 +71,24 @@ public class PuzzlesDbContext(DbContextOptions<PuzzlesDbContext> options) : DbCo
     {
         modelBuilder.Entity<JobEntityAudit>()
             .ToTable("audit_job")
+            .HasKey(e => e.AuditId);
+    }
+
+    public static void PuzzleKnightMovesInit(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<PuzzleKnightMovesEntity>()
+            .ToTable("dbo_puzzle_knightMoves")
+            .HasKey(e => e.PuzzleKnightMovesId);
+        modelBuilder.Entity<PuzzleKnightMovesEntity>()
+            .HasOne(m => m.Matrix)
+            .WithMany()
+            .HasForeignKey(m => m.MatrixId);
+    }
+
+    public static void PuzzleKnightMovesAuditInit(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<PuzzleKnightMovesEntityAudit>()
+            .ToTable("audit_puzzle_knightMoves")
             .HasKey(e => e.AuditId);
     }
 }

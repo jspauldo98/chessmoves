@@ -14,6 +14,8 @@ public static class MappingService
         services.AddScoped<MatrixMapper>();
         // Job
         services.AddScoped<JobMapper>();
+        // Puzzle Knight Moves
+        services.AddScoped<PuzzleKnightMovesMapper>();
 
         // ... Register other Mappers
 
@@ -24,6 +26,9 @@ public static class MappingService
             // Job
             var jobMapper = provider.GetRequiredService<JobMapper>();
             mapperFactory.RegisterMapper(() => Task.FromResult<MapperYonHash<JobEntity, JobModel, JobDto, JobEntityAudit>>(jobMapper));
+            // Job
+            var puzzleKnightMovesMapper = provider.GetRequiredService<PuzzleKnightMovesMapper>();
+            mapperFactory.RegisterMapper(() => Task.FromResult<MapperYonHash<PuzzleKnightMovesEntity, PuzzleKnightMovesModel, PuzzleKnightMovesDto, PuzzleKnightMovesEntityAudit>>(puzzleKnightMovesMapper));
 
             // ... Register other mappers
             

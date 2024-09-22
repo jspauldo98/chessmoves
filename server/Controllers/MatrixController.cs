@@ -1,18 +1,12 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using server.Logic;
 using server.Models;
-using spauldo_techture;
 
 namespace server.Controllers;
 
 [ApiController]
 [Route("api/matrix")]
-// Would add authorization here to hit token validator. Haven't added authentication or authorization to this project 
-// EG:
-//[Authorize(AuthenticationSchemes = AuthenticationScheme.TOKEN)]
 public class MatrixController(
     IMatrixLogic matrixLogic
     ) : ControllerBase

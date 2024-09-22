@@ -1,4 +1,6 @@
+using Hangfire;
 using HashidsNet;
+using server.Mapping;
 using server.Models;
 using spauldo_techture;
 
@@ -6,28 +8,45 @@ namespace server.Logic;
 
 public interface IJobLogic : ILogicCrudYon<JobDto, JobModel, JobEntity, JobEntityAudit>
 {
-    Task OnJobComplete();
+    Task<string> ExecuteJob(JobDto dto, string matrixId);
+    Task OnJobComplete(JobDto dto);
 }
 
-public class JobLogic(AuditorFactory auditorFactory, MapperFactory mapperFactory, RepoFactory repoFactory, IHashids hashids)
+public class JobLogic(
+    AuditorFactory auditorFactory, 
+    MapperFactory mapperFactory, 
+    RepoFactory repoFactory, 
+    IHashids hashids, 
+    IPuzzleKnightMovesLogic knightMovesLogic)
 : LogicCrudYon<JobEntity, JobModel, JobDto, JobEntityAudit>(repoFactory, mapperFactory, auditorFactory, hashids)
 , IJobLogic
 {
-    public override Task<string> SaveAsync(JobDto dto)
+    private readonly IPuzzleKnightMovesLogic _knightMovesLogic = knightMovesLogic;
+    public async Task<string> ExecuteJob(JobDto dto, string matrixId)
     {
-        // TODO get puzzle from puzzle type and job type
-        // TODO Hangfire init
-        return base.SaveAsync(dto);
+        dto.Status = JobStatusEnum.QUEUED;
+        var jobId = await base.SaveAsync(dto);
+
+        // TODO use factory pattern for puzzle types
+        switch (dto.Puzzle)
+        {
+            case PuzzleTypeEnum.KNIGHT_MOVES:
+                string hangfireJobId = BackgroundJob.Enqueue(() => _knightMovesLogic.Solve(matrixId));
+                dto.Status = JobStatusEnum.IN_PROGRESS;
+                dto.HangfireJobId = hangfireJobId;
+                await base.SaveAsync(dto);
+                BackgroundJob.ContinueJobWith(hangfireJobId, () => OnJobComplete(dto));
+                break;
+            default:
+                throw new NotSupportedException($"Puzzle Type: {dto.Puzzle} is not supported");
+        }
+        return jobId;      
     }
 
-    public override Task DeleteAsync(string id)
+    public async Task OnJobComplete(JobDto dto)
     {
-        // Remove from hangfire
-        return base.DeleteAsync(id);
-    }
-
-    public async Task OnJobComplete()
-    {
-
+        dto.Status = JobStatusEnum.FINISHED;
+        dto.CompleteDate = DateTime.Now;
+        await base.SaveAsync(dto);
     }
 }

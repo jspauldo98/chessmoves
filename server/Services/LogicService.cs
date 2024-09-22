@@ -14,6 +14,9 @@ public static class LogicService
         // Job
         services.AddScoped<IJobLogic, JobLogic>();
         services.AddScoped(typeof(ILogicCrudYon<JobDto, JobModel, JobEntity, JobEntityAudit>), typeof(JobLogic));
+        // Puzzle Knight Moves
+        services.AddScoped<IPuzzleKnightMovesLogic, PuzzleKnightMovesLogic>();
+        services.AddScoped(typeof(ILogicCrudYon<PuzzleKnightMovesDto, PuzzleKnightMovesModel, PuzzleKnightMovesEntity, PuzzleKnightMovesEntityAudit>), typeof(PuzzleKnightMovesLogic));
 
         // ... Register other Logic 
     }

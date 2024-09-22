@@ -1,5 +1,3 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using server.Logic;
@@ -37,11 +35,11 @@ public class JobController(
 
     [HttpPut]
     [Route("Put")]
-    public async Task<IActionResult> Put([FromBody] JobDto job)
+    public async Task<IActionResult> Put([FromBody] JobDto job, [FromQuery] string matrixId)
     {
         try
         {
-            return Ok(await _jobLogic.SaveAsync(job));
+            return Ok(await _jobLogic.ExecuteJob(job, matrixId));
         }
         catch (Exception) 
         {
@@ -52,12 +50,12 @@ public class JobController(
 
     [HttpDelete]
     [Route("Delete")]
-    public async Task<IActionResult> Delete([FromQuery] string matrixId)
+    public async Task<IActionResult> Delete([FromQuery] string jobId)
     {
         try
         {
-            if (string.IsNullOrEmpty(matrixId)) return BadRequest("Requires matrix Id.");
-            await _jobLogic.DeleteAsync(matrixId);
+            if (string.IsNullOrEmpty(jobId)) return BadRequest("Requires Job Id.");
+            await _jobLogic.DeleteAsync(jobId);
             return Ok();
         }
         catch (Exception)

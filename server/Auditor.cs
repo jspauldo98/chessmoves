@@ -11,3 +11,6 @@ public class MatrixAuditor(MapperFactory mapperFactory, RepoFactory repoFactory)
 public class JobAuditor(MapperFactory mapperFactory, RepoFactory repoFactory)
 : Auditor<JobEntity, JobModel, JobDto, JobEntityAudit>(mapperFactory, repoFactory) 
 {  }
+public class PuzzleKnightMovesAuditor(MapperFactory mapperFactory, RepoFactory repoFactory)
+: Auditor<PuzzleKnightMovesEntity, PuzzleKnightMovesModel, PuzzleKnightMovesDto, PuzzleKnightMovesEntityAudit>(mapperFactory, repoFactory) 
+{  }

@@ -1,7 +1,6 @@
 using HashidsNet;
 using spauldo_techture;
 using server.Models;
-using System.Text.Json;
 
 namespace server.Mapping;
 
@@ -16,11 +15,12 @@ public class JobMapper(IHashids hashids, IHttpContextAccessor contextAccessor)
         return new JobModel
         {
             JobId = entity.Id,
+            HangfireJobId = entity.HangfireJobId,
             Description = entity.Description,
             Status = entity.Status,
-            Type = entity.Type,
             Puzzle = entity.Puzzle,
             CompleteDate = entity.CompleteDate,
+            ErrorMessage = entity.ErrorMessage,
             CreateBy = entity.CreateBy,
             CreateDate = entity.CreateDate,
             ModifyBy = entity.ModifyBy,
@@ -35,11 +35,12 @@ public class JobMapper(IHashids hashids, IHttpContextAccessor contextAccessor)
         return new JobDto
         {
             Id = id,
+            HangfireJobId = model.HangfireJobId,
             Description = model.Description,
             Status = model.Status,
-            Type = model.Type,
             Puzzle = model.Puzzle,
             CompleteDate = model.CompleteDate,
+            ErrorMessage = model.ErrorMessage,
         };
     }
 
@@ -50,11 +51,12 @@ public class JobMapper(IHashids hashids, IHttpContextAccessor contextAccessor)
         return new JobModel
         {
             JobId = jobId,
+            HangfireJobId = dto.HangfireJobId,
             Description = dto.Description,
             Status = dto.Status,
-            Type = dto.Type,
             Puzzle = dto.Puzzle,
             CompleteDate = dto.CompleteDate,
+            ErrorMessage = dto.ErrorMessage,
         };
     }
 
@@ -65,11 +67,12 @@ public class JobMapper(IHashids hashids, IHttpContextAccessor contextAccessor)
         return new JobEntity
         {
             JobId = model.Id,
+            HangfireJobId = model.HangfireJobId,
             Description = model.Description,
             Status = model.Status,
-            Type = model.Type,
             Puzzle = model.Puzzle,
             CompleteDate = model.CompleteDate,
+            ErrorMessage = model.ErrorMessage,
             CreateBy = model.CreateBy,
             CreateDate = model.CreateDate,
             ModifyBy = model.ModifyBy,
@@ -82,11 +85,12 @@ public class JobMapper(IHashids hashids, IHttpContextAccessor contextAccessor)
         return new JobEntityAudit
         {
             JobId = entity.Id,
+            HangfireJobId = entity.HangfireJobId,
             Description = entity.Description,
             Status = entity.Status,
-            Type = entity.Type,
             Puzzle = entity.Puzzle,
             CompleteDate = entity.CompleteDate,
+            ErrorMessage = entity.ErrorMessage,
             CreateBy = entity.CreateBy,
             CreateDate = entity.CreateDate,
             ModifyBy = entity.ModifyBy,
