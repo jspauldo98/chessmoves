@@ -8,7 +8,6 @@ public interface IMatrixLogic : ILogicCrudYon<MatrixDto, MatrixModel, MatrixEnti
 {
     // Any custom aside from defaults provided by ILogicCrudYon. EG. GetByName
     Task<MatrixDto> GetByName(string name);
-    Task<bool> ExistsByName(string name);
 }
 
 public class MatrixLogic(AuditorFactory auditorFactory, MapperFactory mapperFactory, RepoFactory repoFactory, IHashids hashids) 
@@ -19,11 +18,8 @@ public class MatrixLogic(AuditorFactory auditorFactory, MapperFactory mapperFact
 
     public async Task<MatrixDto> GetByName(string name)
     {
-        return await GetBuilder().Where(m => m.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefaultAsync();
-    }
-
-    public async Task<bool> ExistsByName(string name)
-    {
-        return await ExistsBuilder().Where(m => m.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)).ExistsAsync();
+        // Entity framework does not like parameter with 'StringComparison.CurrentCultureIgnoreCase'
+        // Spauldo techture has a bug with FirstOrDefault
+        return await GetBuilder().Where(m => m.Name.ToLower() == name.ToLower()).LastOrDefaultAsync();
     }
 }

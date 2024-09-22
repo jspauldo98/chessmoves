@@ -28,7 +28,11 @@ public class MatrixModel : Model
 
     public override void Initialize(IHttpContextAccessor context)
     {
-        base.Initialize(context);
+        // TODO - bug in spauldo techture when using hangfire
+        CreateDate = DateTime.Now;
+        CreateBy =  "Demo User";
+        ModifyDate = DateTime.Now;
+        ModifyBy = "Demo USer";
     }
 }
 

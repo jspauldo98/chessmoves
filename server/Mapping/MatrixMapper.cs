@@ -65,7 +65,12 @@ public class MatrixMapper(IHashids hashids, IHttpContextAccessor contextAccessor
 
     protected async override Task<MatrixEntity> MapModelToEntity(MatrixModel model, bool withValidation = false)
     {
-        model.Initialize(_contextAccessor);
+        // model.Initialize(_contextAccessor);
+        // TODO - bug in spauldo techture when using hangfire
+        model.CreateDate = DateTime.Now;
+        model.CreateBy =  "Demo User";
+        model.ModifyDate = DateTime.Now;
+        model.ModifyBy = "Demo USer";
         string serializedMatrix = JsonSerializer.Serialize(model.Matrix);
 
         return new MatrixEntity

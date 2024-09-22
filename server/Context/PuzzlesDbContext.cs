@@ -83,6 +83,10 @@ public class PuzzlesDbContext(DbContextOptions<PuzzlesDbContext> options) : DbCo
             .HasOne(m => m.Matrix)
             .WithMany()
             .HasForeignKey(m => m.MatrixId);
+        modelBuilder.Entity<PuzzleKnightMovesEntity>()
+            .HasOne(m => m.Job)
+            .WithMany()
+            .HasForeignKey(m => m.JobId);
     }
 
     public static void PuzzleKnightMovesAuditInit(ModelBuilder modelBuilder)

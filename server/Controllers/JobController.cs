@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 
 using server.Logic;
@@ -35,10 +36,11 @@ public class JobController(
 
     [HttpPut]
     [Route("Put")]
-    public async Task<IActionResult> Put([FromBody] JobDto job, [FromQuery] string matrixId)
+    public async Task<IActionResult> Put([FromQuery] string matrixId, [FromBody] JobDto job)
     {
         try
         {
+            if (string.IsNullOrEmpty(matrixId) || matrixId == "undefined") return StatusCode(400, "Matrix Id required");
             return Ok(await _jobLogic.ExecuteJob(job, matrixId));
         }
         catch (Exception) 

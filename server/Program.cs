@@ -6,6 +6,7 @@ using Hangfire.MySql;
 using server.Services;
 using server.Context;
 using server;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,11 @@ builder.Services.AddHangfire(conf => conf
         CountersAggregateInterval = TimeSpan.FromMinutes(5),
         DashboardJobListLimit = 50000,
         TransactionTimeout = TimeSpan.FromMinutes(1),
-    })));
+    }))
+    .UseFilter(new AutomaticRetryAttribute {
+        Attempts = 10,
+        DelaysInSeconds = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    }));
 builder.Services.AddHangfireServer();
 
 builder.Services.AddDbContext<PuzzlesDbContext>(options =>
@@ -58,9 +63,18 @@ builder.Services.AddTransient<IHashids>(x => hashids);
 builder.Services.RegisterServices();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
 var app = builder.Build();
 app.UseRouting();
 app.UseCors("Cors-Policy");
+
+app.UseHangfireDashboard("/hangfire");
 
 app.UseDemoUser();
 app.UseAuthentication();

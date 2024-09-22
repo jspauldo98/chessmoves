@@ -8,7 +8,9 @@ public class PuzzleKnightMovesDto : Dto
 {
     public long UniquePathsCount { get; set; }
     public string MatrixId { get; set; }
+    public string JobId { get; set; }
     public MatrixDto Matrix { get; set; }
+    public JobDto Job { get; set; }
 }
 
 public class PuzzleKnightMovesModel : Model
@@ -16,12 +18,18 @@ public class PuzzleKnightMovesModel : Model
     public int PuzzleKnightMovesId { get; set; }
     public long UniquePathsCount { get; set; }
     public int MatrixId { get; set; }
+    public int JobId { get; set; }
     public MatrixModel Matrix { get; set; }
+    public JobModel Job { get; set; }
 
     public override int Id => PuzzleKnightMovesId;
     public override void Initialize(IHttpContextAccessor context)
     {
-        base.Initialize(context);
+        // TODO - bug in spauldo techture when using hangfire
+        CreateDate = DateTime.Now;
+        CreateBy =  "Demo User";
+        ModifyDate = DateTime.Now;
+        ModifyBy = "Demo USer";
     }
 }
 
@@ -33,10 +41,12 @@ public class PuzzleKnightMovesEntity : Entity
     public int PuzzleKnightMovesId { get; set; }
     public long UniquePathsCount { get; set; }
     public int MatrixId { get; set; }
+    public int JobId { get; set; }
 
     public override int Id => PuzzleKnightMovesId;
     // Relational Attributes
     public virtual MatrixEntity Matrix { get; set;}
+    public virtual JobEntity Job { get; set; }
 }
 
 public class PuzzleKnightMovesEntityAudit : EntityAudit
@@ -45,4 +55,5 @@ public class PuzzleKnightMovesEntityAudit : EntityAudit
     public int PuzzleKnightMovesId { get; set; }
     public long UniquePathsCount { get; set; }
     public int MatrixId { get; set; }
+    public int JobId { get; set; }
 }

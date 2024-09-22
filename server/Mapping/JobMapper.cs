@@ -14,7 +14,7 @@ public class JobMapper(IHashids hashids, IHttpContextAccessor contextAccessor)
     {
         return new JobModel
         {
-            JobId = entity.Id,
+            JobId = entity.JobId,
             HangfireJobId = entity.HangfireJobId,
             Description = entity.Description,
             Status = entity.Status,
@@ -62,11 +62,16 @@ public class JobMapper(IHashids hashids, IHttpContextAccessor contextAccessor)
 
     protected async override Task<JobEntity> MapModelToEntity(JobModel model, bool withValidation = false)
     {
-        model.Initialize(_contextAccessor);
+        // model.Initialize(_contextAccessor);
+        // TODO - bug in spauldo techture when using hangfire
+        model.CreateDate = DateTime.Now;
+        model.CreateBy =  "Demo User";
+        model.ModifyDate = DateTime.Now;
+        model.ModifyBy = "Demo USer";
 
         return new JobEntity
         {
-            JobId = model.Id,
+            JobId = model.JobId,
             HangfireJobId = model.HangfireJobId,
             Description = model.Description,
             Status = model.Status,
@@ -84,7 +89,7 @@ public class JobMapper(IHashids hashids, IHttpContextAccessor contextAccessor)
     {
         return new JobEntityAudit
         {
-            JobId = entity.Id,
+            JobId = entity.JobId,
             HangfireJobId = entity.HangfireJobId,
             Description = entity.Description,
             Status = entity.Status,

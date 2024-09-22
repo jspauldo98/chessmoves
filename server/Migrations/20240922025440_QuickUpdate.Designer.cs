@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using server.Context;
 
@@ -11,9 +12,11 @@ using server.Context;
 namespace server.Migrations
 {
     [DbContext(typeof(PuzzlesDbContext))]
-    partial class PuzzlesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240922025440_QuickUpdate")]
+    partial class QuickUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -190,9 +193,9 @@ namespace server.Migrations
                             MatrixId = 1,
                             Columns = 5,
                             CreateBy = "EF-SEED",
-                            CreateDate = new DateTime(2024, 9, 22, 11, 45, 54, 44, DateTimeKind.Local).AddTicks(9458),
+                            CreateDate = new DateTime(2024, 9, 21, 20, 54, 40, 303, DateTimeKind.Local).AddTicks(6896),
                             ModifyBy = "EF-SEED",
-                            ModifyDate = new DateTime(2024, 9, 22, 11, 45, 54, 44, DateTimeKind.Local).AddTicks(9501),
+                            ModifyDate = new DateTime(2024, 9, 21, 20, 54, 40, 303, DateTimeKind.Local).AddTicks(6942),
                             Name = "Default",
                             Rows = 5,
                             SerializedMatrix = "[[\"A\",\"B\",\"C\",\" \",\"E\"],[\" \",\"G\",\"H\",\"I\",\"J\"],[\"K\",\"L\",\" \",\"N\",\"O\"],[\"P\",\"Q\",\"R\",\"S\",\"T\"],[\"U\",\"V\",\" \",\" \",\"Y\"]]"
@@ -278,9 +281,6 @@ namespace server.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("CreateDate");
 
-                    b.Property<int>("JobId")
-                        .HasColumnType("int");
-
                     b.Property<int>("MatrixId")
                         .HasColumnType("int");
 
@@ -297,8 +297,6 @@ namespace server.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("PuzzleKnightMovesId");
-
-                    b.HasIndex("JobId");
 
                     b.HasIndex("MatrixId");
 
@@ -326,9 +324,6 @@ namespace server.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("CreateDate");
-
-                    b.Property<int>("JobId")
-                        .HasColumnType("int");
 
                     b.Property<int>("MatrixId")
                         .HasColumnType("int");
@@ -364,19 +359,11 @@ namespace server.Migrations
 
             modelBuilder.Entity("server.Models.PuzzleKnightMovesEntity", b =>
                 {
-                    b.HasOne("server.Models.JobEntity", "Job")
-                        .WithMany()
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("server.Models.MatrixEntity", "Matrix")
                         .WithMany()
                         .HasForeignKey("MatrixId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Job");
 
                     b.Navigation("Matrix");
                 });

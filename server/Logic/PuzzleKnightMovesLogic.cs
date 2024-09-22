@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using System.Text.Json;
 using HashidsNet;
 using LinqToDB.DataProvider;
 using server.Models;
@@ -8,7 +10,7 @@ namespace server.Logic;
 public interface IPuzzleKnightMovesLogic 
 : ILogicCrudYon<PuzzleKnightMovesDto, PuzzleKnightMovesModel, PuzzleKnightMovesEntity, PuzzleKnightMovesEntityAudit>
 {
-    Task<long> Solve(string matrixId);
+    Task<long> Solve(string matrixId, string puzzleId);
 }
 
 public class PuzzleKnightMovesLogic(AuditorFactory auditorFactory, MapperFactory mapperFactory, RepoFactory repoFactory, IHashids hashids, IMatrixLogic matrixLogic)
@@ -36,12 +38,11 @@ public class PuzzleKnightMovesLogic(AuditorFactory auditorFactory, MapperFactory
         public int VowelCount { get; } = vowelCount;
     }
 
-    public async Task<long> Solve(string matrixId)
+    public async Task<long> Solve(string matrixId, string puzzleId)
     {
         MatrixDto matrixDto = await _matrixLogic.GetAsync(matrixId);
-        var matrixMapper = await _mapperFactory.GetMapper<MatrixDto, MatrixModel, MatrixEntity, MatrixEntityAudit>();
-        MatrixModel matrixModel = await matrixMapper.Map<MatrixModel>(matrixDto);
-        char[][] matrix = matrixModel.Matrix;
+        PuzzleKnightMovesDto puzzleDto = await GetAsync(puzzleId);
+        char[][] matrix = JsonSerializer.Deserialize<char[][]>(matrixDto.SerializedMatrix);
 
         long count = 0;
         for (int i = 0; i < matrix.Length; i++)
@@ -56,12 +57,8 @@ public class PuzzleKnightMovesLogic(AuditorFactory auditorFactory, MapperFactory
             }
         }
 
-        PuzzleKnightMovesDto dto = new()
-        {
-            UniquePathsCount = count,
-            MatrixId = matrixId
-        };
-        await SaveAsync(dto);
+        puzzleDto.UniquePathsCount = count;
+        await SaveAsync(puzzleDto);
         return count;
     }
 

@@ -35,7 +35,6 @@ public class MatrixController(
     {
         try
         {
-            if (!await _matrixLogic.ExistsByName(name)) return StatusCode(404);
             return Ok(await _matrixLogic.GetByName(name));
         }
         catch (Exception)
@@ -45,9 +44,24 @@ public class MatrixController(
         }
     }
 
-    [HttpPost]
-    [Route("Post")]
-    public async Task<IActionResult> Post([FromBody] MatrixDto dto)
+    [HttpGet]
+    [Route("GetAll")]
+    public async Task<IActionResult> GetAll()
+    {
+        try
+        {
+            return Ok(await _matrixLogic.GetAll());
+        }
+        catch (Exception)
+        {
+            // TODO - need to add exception handling
+            return StatusCode(500); 
+        }
+    }
+
+    [HttpPut]
+    [Route("Put")]
+    public async Task<IActionResult> Put([FromBody] MatrixDto dto)
     {
         try
         {

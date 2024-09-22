@@ -2,6 +2,7 @@ using Hangfire;
 using HashidsNet;
 using server.Mapping;
 using server.Models;
+using server.Repository;
 using spauldo_techture;
 
 namespace server.Logic;
@@ -22,19 +23,31 @@ public class JobLogic(
 , IJobLogic
 {
     private readonly IPuzzleKnightMovesLogic _knightMovesLogic = knightMovesLogic;
+
     public async Task<string> ExecuteJob(JobDto dto, string matrixId)
     {
         dto.Status = JobStatusEnum.QUEUED;
-        var jobId = await base.SaveAsync(dto);
+        var jobId = await SaveAsync(dto);
+
+        PuzzleKnightMovesDto pDto = new()
+        {
+            UniquePathsCount = 0,
+            MatrixId = matrixId,
+            JobId = jobId
+        };
+
+        var pId = await _knightMovesLogic.SaveAsync(pDto);
 
         // TODO use factory pattern for puzzle types
         switch (dto.Puzzle)
         {
             case PuzzleTypeEnum.KNIGHT_MOVES:
-                string hangfireJobId = BackgroundJob.Enqueue(() => _knightMovesLogic.Solve(matrixId));
+                string hangfireJobId = BackgroundJob.Enqueue(() => _knightMovesLogic.Solve(matrixId, pId));
                 dto.Status = JobStatusEnum.IN_PROGRESS;
                 dto.HangfireJobId = hangfireJobId;
-                await base.SaveAsync(dto);
+                dto.Id = jobId;
+                await SaveAsync(dto);
+                await OnJobComplete(dto);
                 BackgroundJob.ContinueJobWith(hangfireJobId, () => OnJobComplete(dto));
                 break;
             default:
@@ -47,6 +60,6 @@ public class JobLogic(
     {
         dto.Status = JobStatusEnum.FINISHED;
         dto.CompleteDate = DateTime.Now;
-        await base.SaveAsync(dto);
+        await SaveAsync(dto);
     }
 }
