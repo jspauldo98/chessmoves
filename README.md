@@ -8,7 +8,7 @@ A demo full stack project for coding challenges.
 -   Use of Hangfire for processing server tasks in the background like Knight Moves, the first coding challenge added.
 -   Custom four stage object mapper (spauldo_techture).
 -   Entity framework migrations for easy database setups.
--   View the live project here: [puzzles.spauldoindustries.com](puzzles.spauldoindustries.com)
+-   View the live project here: [puzzles.spauldoindustries.com](https://puzzles.spauldoindustries.com)
 
 ## Tech Stack
 
