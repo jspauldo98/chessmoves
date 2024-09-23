@@ -1,0 +1,129 @@
+.matrix-example {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: #1a1a1a;
+    min-height: 100vh;
+}
+
+.matrix-example h1 {
+    color: #ffffff;
+    margin-bottom: 2rem;
+}
+
+.empty-cell {
+    background-color: transparent;
+}
+
+.matrix-container1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+}
+
+.container2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 50px;
+}
+
+.solve-button {
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.refresh-button {
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #52df00;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.solve-button:hover {
+    background-color: #357abd;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.solve-button:active {
+    background-color: #2a5f9e;
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.matrix-wrapper {
+    flex: 0 1 auto;
+}
+
+.table-wrapper {
+    flex: 0 0 300px;
+    margin-left: 2rem;
+}
+
+.table-wrapper {
+    background-color: #2a2a2a;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.table-wrapper h2 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.table-wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-wrapper th,
+.table-wrapper td {
+    padding: 0.5rem;
+    text-align: left;
+    border: 1px solid #4a4a4a;
+    color: #ffffff;
+}
+
+.table-wrapper button {
+    padding: 0.25rem 0.5rem;
+    background-color: #4a4a4a;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.table-wrapper input {
+    width: 100%;
+    padding: 0.25rem;
+    margin-bottom: 0.5rem;
+    background-color: #3a3a3a;
+    border: 1px solid #4a4a4a;
+    color: #ffffff;
+    border-radius: 4px;
+}
